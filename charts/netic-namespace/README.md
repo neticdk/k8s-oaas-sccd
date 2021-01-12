@@ -3,7 +3,7 @@
 The chart is intended to bootstrap new namespace with necessary policies and deployments. 
 
 ## To try this out in a local cluster:
-Starting up a kind cluster can be done based on the cluster definition `hack/kind-cluster.yaml`.
+Starting up a kind cluster can be done based on the cluster definition `local/kind-cluster.yaml`.
 
 ## Working Locally
 
