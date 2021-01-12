@@ -1,0 +1,15 @@
+{{- if index .Values "helm-operator" "enabled" }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ template "netic.helmop.fullname" . }}
+  labels: {{ include "netic.helmop.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ template "netic.helmop.fullname" . }}
+subjects:
+  - name: {{ template "netic.helmop.serviceAccountName" . }}
+    namespace: {{ $.Release.Namespace | quote }}
+    kind: ServiceAccount
+{{- end }}

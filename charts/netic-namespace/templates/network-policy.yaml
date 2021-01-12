@@ -1,0 +1,22 @@
+{{- if .Values.global.networkPolicyEnabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  labels: {{ include "labels" . | nindent 4 }}
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+{{- $root := . -}}
+{{- range .Values.networkPolicies }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .name }}
+  labels: {{ include "labels" $root | nindent 4 }}
+spec: {{ .spec | toYaml | nindent 2 }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,148 @@
+# Default values for Netic Namespace chart
+
+global:
+  networkPolicyEnabled: true
+
+# resourceQuota specifies quota restrictions for namespace
+resourceQuota:
+  enabled: true
+  spec:
+    hard:
+      requests.cpu: "1"
+      requests.memory: 1Gi
+      limits.cpu: "2"
+      limits.memory: 2Gi
+
+# limitRange can be used to set up the default used if a pod does not provide resource limits and requests
+limitRange:
+  enabled: true
+  spec:
+    limits:
+      - default:
+          cpu: 250m
+          memory: 512Mi
+        defaultRequest:
+          cpu: 100m
+          memory: 256Mi
+        type: Container
+
+# networkPolicies defines extra policies for namespace
+# E.g., the below policy allowing ingress traffic for port 8080 for any pod/services labelled "netic.dk/network-ingress=default"
+# - name: default-ingress
+#   spec:
+#    podSelector:
+#      matchLabels:
+#        netic.dk/network-ingess: default
+#    policyTypes:
+#    - Ingress
+#    ingress:
+#      - from:
+#        - podSelector: {}
+#        ports:
+#        - protocol: TCP
+#          port: 8080
+networkPolicies: []
+
+# pspClusterRole makes a rolebinding for the default service account with the given cluster role setting up the
+# default pod security policy for the default service account.
+pspClusterRole: ""
+
+# createServiceAccount to access the namespace with "edit" permissions (https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles)
+createServiceAccount: false
+
+# flux installed by subchart
+flux:
+  enabled: true
+  resources:
+    requests:
+      cpu: 75m
+      memory: 64Mi
+    limits:
+      cpu: 75m
+      memory: 128Mi
+  memcached:
+    enabled: true
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 50m
+        memory: 256Mi
+  syncGarbageCollection:
+    enabled: true
+  rbac:
+    create: false
+    rules:
+      # FluxCD will patch its own secrets
+      - apiGroups: [""]
+        resources: ["secrets"]
+        verbs: ["patch"]
+      # Below is needed for automatic image promotion (even through Helm Operator)
+      - apiGroups: ["apps"]
+        resources: ["deployments", "daemonset", "statefulset"]
+        verbs: ["get", "list", "watch"]
+      # The next is needed for pulling images from private registries (handling image promotion)
+      - apiGroups: [""]
+        resources: ["secrets", "serviceaccounts"]
+        verbs: ["get", "list", "watch"]
+      # The next is resources directly managed by flux - here only helm releases
+      - apiGroups: ["helm.fluxcd.io"]
+        resources: ["helmreleases"]
+        verbs: ["*"]
+  serviceAccount:
+    create: false
+    name: flux
+
+# helm-operator installed by subchart
+helm-operator:
+  enabled: true
+  helm:
+    versions: "v3"
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 256Mi
+  clusterRole:
+    create: false
+  rbac:
+    create: false
+    rules:
+      # Allow access to the CRD
+      - apiGroups: ["helm.fluxcd.io"]
+        resources: ["helmreleases"]
+        verbs: ["get", "list", "watch", "update"]
+      - apiGroups: ["helm.fluxcd.io"]
+        resources: ["helmreleases/status"]
+        verbs: ["create", "patch", "update"]
+      - apiGroups: ["", "events.k8s.io"]
+        resources: ["events"]
+        verbs: ["create", "patch", "update"]
+      # Allow management of resources which are part of deployments in the namespace
+      - apiGroups: [""]
+        resources: ["services", "configmaps", "secrets", "persistentvolumeclaims"]
+        verbs: ["*"]
+      - apiGroups: ["apps"]
+        resources: ["deployments", "statefulsets"]
+        verbs: ["*"]
+      - apiGroups: ["batch"]
+        resources: ["cronjobs", "jobs"]
+        verbs: ["*"]
+      - apiGroups: ["extensions", "networking.k8s.io"]
+        resources: ["ingresses"]
+        verbs: ["*"]
+      - apiGroups: ["monitoring.coreos.com"]
+        resources: ["servicemonitors", "podmonitors", "prometheusrules", "probes"]
+        verbs: ["*"]
+      - apiGroups: ["projectcontour.io"]
+        resources: ["httpproxies"]
+        verbs: ["*"]
+      - apiGroups: ["policy"]
+        resources: ["poddisruptionbudgets"]
+        verbs: ["*"]
+  serviceAccount:
+    create: false
+    name: helm-operator
