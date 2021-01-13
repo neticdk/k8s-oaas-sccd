@@ -2,15 +2,13 @@
 
 The chart is intended to bootstrap new namespace with necessary policies and deployments. 
 
-## To try this out in a local cluster:
-Starting up a kind cluster can be done based on the cluster definition `local/kind-cluster.yaml`.
+## To try this out in a cluster:
+You can try it out on a local cluster or try it on a cluster you have already.
 
-## Working Locally
+The chart can be tested locally using Kubernetes in Docker (kind).
+A kind cluster can be created based on the cluster definition `local/kind-cluster.yaml`.
 
-The chart can be tested locally using Kubernetes in Docker (kind) and Docker compose (simulating
-Netic data collection). All the following commands assume current directory is the chart root.
-
-### installation requirements
+## Installation requirements
 First make sure that:
  - external rules and dashboards are downloaded. 
  - kind is installed
@@ -30,13 +28,13 @@ or using brew:
 ```bash
 brew install kubectl
 brew install helm
-brew install kind
 brew install jsonnet
+brew install kind
 ```
 
+### Create a local cluster
+All the following commands assume current directory is the chart root.
 Starting up a local kind cluster on the cluster definition `local/kind-cluster.yaml`.
-
-### Create the local cluster
 ```bash
 $ kind create cluster --name oaas --config local/kind-cluster.yaml
 ```
@@ -70,16 +68,19 @@ $ helm upgrade -i -n netic-oaas-system --create-namespace oaas .
 ```bash
 $ kubectl get all -A 
 ```
-### Delete the created cluster (once you are done with that)
+### Delete the local created cluster
+If you are done with the local cluster - you can delete that
 ```bash
 $ kind delete cluster --name=oaas
 ```
-## Namespace Resource Quotas
+## Default installation
+
+### Namespace Resource Quotas
 
 By default the chart will install a resource quota defined by `resourceQuota.spec`. This may disabled setting `resourceQuota.enabled` to false. See also [values.yaml](./values.yaml).
 
 
-## Network Policies
+### Network Policies
 
 A default network policy of deny all will be installed into the namespace. Additional policies may be
 added as `networkPolicies`, e.g.:
@@ -104,7 +105,7 @@ networkPolicies:
 The above allows ingress trafic to any pod labelled `netic.dk/network-ingress=default` from any other pod.
 
 
-## Flux
+### Flux
 
 By default the chart will install FluxCD into the namespace using the
 official [Flux Helm Chart](https://github.com/fluxcd/flux/tree/master/chart/flux). It is necessary, though, to setup credentials for the GitOps repository, e.g.
@@ -120,7 +121,7 @@ See the Flux chart documentation but not that the properties are "prefixed" with
 Flux will be locked down by default only able to create helmrelease manifests. This is configured from `flux.rbac.rules` - see the [values.yaml](./values.yaml) for defaults.
 
 
-## Helm Operator
+### Helm Operator
 
 By default the chart will install Flux Helm Operator into the namespace using the official [Helm Operator Chart](https://github.com/fluxcd/helm-operator/tree/master/chart/helm-operator). The documented options are available using a prefix of `helm-operator`.
 
