@@ -45,7 +45,7 @@ $ kubectl cluster-info --context kind-oaas
 
 ### Create the desired namespace in the created local kind cluster
 ```bash
-$ kubectl create ns netic-oaas-system
+$ kubectl create ns netic-oaas-team
 $ kubectl get ns
 ```
 
@@ -62,7 +62,7 @@ $ helm dependency update .
 
 ### Deploy the chart to the local kind cluster.
 ```bash
-$ helm upgrade -i -n netic-oaas-system --create-namespace oaas .
+$ helm upgrade -i -n netic-oaas-team --create-namespace netic-oaas-team .
 ```
 ### See that the cluster is running with flux
 ```bash
