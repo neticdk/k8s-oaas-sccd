@@ -1,5 +1,5 @@
 # k8s-oaas-sccd
-a gitops based [secure cluster](docs/secure-cluster-concepts.md) and [secure namespaces](charts/netic-namespace/README.md) setup for kubernetes as a part of Operations as a Service (OaaS)
+a gitops based [secure cluster](charts/netic-namespace/docs/secure-cluster-concepts.md) and [secure namespaces](charts/netic-namespace/README.md) setup for kubernetes as a part of Operations as a Service (OaaS)
 
 Operations as a Service for kubernetes is a "shift-left" approach for development for security and operations. 
 Operations as a Service for kubernetes consists of a number of repositories, where this is the foundation because it contains the Observability part that makes operations possible. 
@@ -12,7 +12,7 @@ This repository includes the gitOps secure cluster packages, there are other fou
   
 * [cluster tools (advanced secrets management including backup and restore)](https://github.com/neticdk/k8s-oaas-tools)
 
-Kubernetes Operations as a Service - [Secure Cluster](docs/secure-cluster-concepts.md) consist of a helm chart, scripts etc and will be including an Operator at a point in time.
+Kubernetes Operations as a Service - [Secure Cluster](charts/netic-namespace/docs/secure-cluster-concepts.md) consist of a helm chart, scripts etc and will be including an Operator at a point in time.
 That Operator will prepare a kubernetes cluster for being secure and gitOps enabled at the cluster level as well as at the namespace level.
 
 # Operations as a Service - Secure Cluster
