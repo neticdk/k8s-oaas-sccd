@@ -1,0 +1,87 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configmap
+  namespace: team-a
+  labels:
+    app: nginx
+data:
+  index.html: |
+    <h1>Hello World - in team A we run nginx!</h1>
+  default.conf: |
+    server {
+      listen       80;
+      server_name  testing.local;
+
+      location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+      }
+
+      location /team-a {
+        rewrite ^/team-a.* /index.html break;
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+      }
+
+      error_page   500 502 503 504  /50x.html;
+      location = /50x.html {
+        root   /usr/share/nginx/html;
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: team-a
+  labels:
+    app: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html/index.html
+            name: nginx-conf
+            subPath: index.html
+          - mountPath: /etc/nginx/conf.d/default.conf
+            name: nginx-conf
+            subPath: default.conf
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            memory: 512Mi
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: team-a
+  labels:
+    app: nginx
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: nginx

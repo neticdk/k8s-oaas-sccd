@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+*.tgz
 
 # Test binary, built with `go test -c`
 *.test
@@ -13,6 +14,9 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+#keys
+neticdk-k8s-oaas-sccd-at-github*
 
 #MacOS
 .DS_Store

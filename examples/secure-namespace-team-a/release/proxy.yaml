@@ -1,0 +1,11 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: team-a-proxy
+  namespace: team-a
+spec:
+  routes:
+    - services:
+        - name: nginx-service
+          port: 80

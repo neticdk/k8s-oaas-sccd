@@ -1,0 +1,14 @@
+apiVersion: v2
+name: poc-kind-contour-httpproxies
+type: application
+description: A Helm chart to create http proxies on contour
+home: https://github.com/neticdk/k8s-oaas-sccd
+version: "1.0.3"
+icon: https://www.netic.dk/wp-content/uploads/2020/07/bluelogo-netic-trifork-blue_641px.png
+maintainers:
+  - name: Kim Nørgaard
+    email: kn@netic.dk
+dependencies:
+  - name: contour
+    version: 2.3.2
+    repository: https://charts.bitnami.com/bitnami

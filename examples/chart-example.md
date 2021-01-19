@@ -10,33 +10,22 @@ A kind cluster can be created based on the cluster definition `local/kind-cluste
 
 ## Installation requirements
 First make sure that:
- - external rules and dashboards are downloaded. 
  - kind is installed
  - kubectl is installed
  - helm is installed
- - jsonnet is installed
-As the external templates are based on `jsonnet` and thus this needs to be available.
 
-```bash
-#install kubectl, helm, kind, go
-# and assuming $GOPATH/bin is in path install jsonnet
-$ go get github.com/google/go-jsonnet/cmd/jsonnet
-$ go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
-$ ./ci/update-rules.sh
-```
 or using brew:
 ```bash
 brew install kubectl
 brew install helm
-brew install jsonnet
 brew install kind
 ```
 
 ### Create a local cluster
 All the following commands assume current directory is the chart root.
-Starting up a local kind cluster on the cluster definition `local/kind-cluster.yaml`.
+Starting up a local kind cluster on the cluster definition `examples/local/kind-cluster.yaml`.
 ```bash
-$ kind create cluster --name oaas --config local/kind-cluster.yaml
+$ kind create cluster --name oaas --config examples/local/k8s.yaml 
 ```
 ### Access the created local kind cluster
 ```bash
@@ -51,12 +40,12 @@ $ kubectl get ns
 
 ### Initialize Helm (if this is first time running this).
 ```bash
-$ helm repo add grafana https://grafana.github.io/helm-charts
+$ helm repo add fluxcd https://charts.fluxcd.io
 ```
 
 ### Update Helm dependencies
+If necessary update dependencies
 ```bash
-$ cd charts/netic-namespace
 $ helm dependency update .
 ```
 

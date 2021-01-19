@@ -1,0 +1,10 @@
+{{- range .Values.http_proxies }}
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: {{ .name }}
+  namespace: {{ .namespace }}
+  labels: {{ .labels | toYaml | nindent 4 }}
+spec: {{ .spec | toYaml | nindent 2 }}
+{{- end }}

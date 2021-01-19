@@ -2,7 +2,7 @@ apiVersion: v2
 name: netic-namespace
 type: application
 description: A Helm chart to initialize new namespace
-home: https://git.netic.dk/projects/PD/repos/charts/browse
+home: https://https://github.com/neticdk/k8s-oaas-sccd
 version: "1.0.16"
 icon: https://www.netic.dk/wp-content/uploads/2020/07/bluelogo-netic-trifork-blue_641px.png
 maintainers:

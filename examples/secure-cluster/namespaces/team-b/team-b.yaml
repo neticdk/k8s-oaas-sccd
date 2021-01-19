@@ -1,0 +1,108 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: team-b
+  labels:
+    customer.dk/owner: customer
+    customer.dk/origin: team-b
+    customer.dk/type: application-space
+    netic.dk/cni.id: team-b-application-x
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: team-b-flux-ssh
+  namespace: team-b
+type: Opaque
+data:
+  identity: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDs66HKAHEIkxrk8uYEu5fzbdwk7mB9xpzZVTMlfcdgvA8AjREJ6ohtFI74XrPVNgM/lf2lVe/6wextvzAZ+yQVsTnmiyd+OUY1BCzeVitPL798+F6eBk6KQZ49ObsR7IviPu0AJWLLD2fCE1h1Vlo5j/NYLxPGWCKDieUlIIAXH9LyLJOKZomOm9Q37wqonzEC+Xkl7O2gspnsKjXzLKfzTWrf94eehK9nLBVTh+WHpbNyJV4CeTb7soKQK75TkQ/EcwOWK7QzQXALJps/03NvCbZyLST6CXgdFUEmPNNTl5skeY9WRUCXOs/P4aEV1nuTUGe7/b6U1xMubzLFSZqiAOAJxxX4zGJbwWdMJrZjSfVwjq/uKuu+KknUsr5gk9NeECQsjVuXKv37RIlP594zhBLPfNN28vHUpuTOUAxD6KhztyyCKwkTNLAZKJG6xYgTCrexN9FQKzBm8Ak4TIuXi0ioin88TSAQuxQqIr9NuzqfRGJduUY6EwceVw4yo8s= fluxcd-ssh-key/neticdk-k8s-oaas-sccd@github
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: team-b-namespace
+  namespace: netic-oaas-system
+spec:
+  helmVersion: v3
+  targetNamespace: team-b
+  releaseName: bootstrap-team-b
+  chart:
+    git: git@github.com:neticdk/k8s-oaas-sccd.git
+    ref: main
+    path: 
+  values:
+    createServiceAccount: true
+    networkPolicyEnabled: false
+    resourceQuota:
+      enabled: false
+    flux:
+      env:
+        secretName: team-b-flux-ssh
+      git:
+        url: ssh://git@github.com:neticdk/k8s-oaas-sccd.git
+        path: examples/secure-namespace-team-b
+        secretName: team-b-flux-ssh
+        pollInterval: 2m
+      ssh:
+        known_hosts: "[github.com]:443 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDs66HKAHEIkxrk8uYEu5fzbdwk7mB9xpzZVTMlfcdgvA8AjREJ6ohtFI74XrPVNgM/lf2lVe/6wextvzAZ+yQVsTnmiyd+OUY1BCzeVitPL798+F6eBk6KQZ49ObsR7IviPu0AJWLLD2fCE1h1Vlo5j/NYLxPGWCKDieUlIIAXH9LyLJOKZomOm9Q37wqonzEC+Xkl7O2gspnsKjXzLKfzTWrf94eehK9nLBVTh+WHpbNyJV4CeTb7soKQK75TkQ/EcwOWK7QzQXALJps/03NvCbZyLST6CXgdFUEmPNNTl5skeY9WRUCXOs/P4aEV1nuTUGe7/b6U1xMubzLFSZqiAOAJxxX4zGJbwWdMJrZjSfVwjq/uKuu+KknUsr5gk9NeECQsjVuXKv37RIlP594zhBLPfNN28vHUpuTOUAxD6KhztyyCKwkTNLAZKJG6xYgTCrexN9FQKzBm8Ak4TIuXi0ioin88TSAQuxQqIr9NuzqfRGJduUY6EwceVw4yo8s= fluxcd-ssh-key/neticdk-k8s-oaas-sccd@github\n"
+      registry:
+        disableScanning: true
+      rbac:
+        create: true
+        rules:
+          # FluxCD will patch its own secrets
+          - apiGroups: [""]
+            resources: ["secrets"]
+            verbs: ["patch"]
+          # Below is needed for automatic image promotion (even through Helm Operator)
+          - apiGroups: ["apps"]
+            resources: ["deployments", "daemonset", "statefulset"]
+            verbs: ["get", "list", "watch"]
+          # The next is needed for pulling images from private registries (handling image promotion)
+          - apiGroups: [""]
+            resources: ["secrets", "serviceaccounts"]
+            verbs: ["get", "list", "watch"]
+          # The next is resources directly managed by flux - here only helm releases
+          - apiGroups: ["helm.fluxcd.io"]
+            resources: ["helmreleases"]
+            verbs: ["*"]
+          - apiGroups: [""]
+            resources: ["services", "configmaps", "secrets"]
+            verbs: ["*"]
+          - apiGroups: ["apps"]
+            resources: ["deployments", "statefulsets"]
+            verbs: ["*"]
+          - apiGroups: ["projectcontour.io"]
+            resources: ["httpproxies"]
+            verbs: ["*"]
+---
+# Allow communication between pods in namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-team-b-pod-to-pod
+  namespace: team-b
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: team-b-apache
+  namespace: team-b
+spec:
+  podSelector:
+    matchLabels:
+      app: apache
+  policyTypes:
+    - Ingress
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 80

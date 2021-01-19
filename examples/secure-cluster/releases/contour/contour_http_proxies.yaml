@@ -1,0 +1,18 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: netic-oaas-contour-httpproxies
+  namespace: netic-oaas-system
+spec:
+  helmVersion: v3
+  targetNamespace: netic-oaas-system
+  releaseName: netic-oaas-contour-httpproxies
+  chart:
+    git: git@github.com:neticdk/k8s-oaas-sccd.git
+    ref: main
+    path: examples/charts/ingress
+  valuesFrom:
+    - configMapKeyRef:
+        name: poc-kind-contour-httpproxies-values
+        optional: true

@@ -21,4 +21,7 @@
 *.tmproj
 # Files for development
 ci
-hack
+local
+examples
+docs
+
