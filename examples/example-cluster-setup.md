@@ -69,19 +69,44 @@ kubectl create secret generic helm-operator-ssh --from-file=identity=examples/ss
 Create a known_hosts file and replace that in the ssh folder or change the path in the command below underneath
 
 ```bash
-helm upgrade -i flux oaas-flux/flux --set git.url=git@github.com:neticdk/k8s-oaas-sccd.git --set git.secretName=cluster-flux-ssh --set git.path=examples/secure-cluster --set git.readonly=true --set sync.state=secret --set git.branch=main --set git.pollInterval=1m --set git.timeout=300s --set sync.timeout=10m --set rbac.pspEnabled=true --set-file ssh.known_hosts=examples/ssh/known_hosts --namespace netic-oaas-system
+helm upgrade -i flux oaas-flux/flux \
+  --namespace netic-oaas-system \
+  --set git.url=git@github.com:neticdk/k8s-oaas-sccd.git \
+  --set git.secretName=cluster-flux-ssh \
+  --set git.path=secure-cluster \
+  --set git.readonly=true \
+  --set sync.state=secret \
+  --set git.branch=examples \
+  --set git.pollInterval=2m \
+  --set rbac.pspEnabled=true \
+  --set registry.disableScanning=true \
+  --set-file ssh.known_hosts=examples/ssh/known_hosts
 ```
 
 Writeback 
 ```bash
-helm upgrade -i flux oaas-flux/flux --set git.url=git@github.com:neticdk/k8s-oaas-sccd.git --set git.secretName=cluster-flux-ssh --set git.path=examples/secure-cluster --set git.branch=main --set git.pollInterval=1m --set rbac.pspEnabled=true --set-file ssh.known_hosts=examples/ssh/known_hosts --namespace netic-oaas-system
+helm upgrade -i flux oaas-flux/flux \
+  --namespace netic-oaas-system \
+  --set git.url=git@github.com:neticdk/k8s-oaas-sccd.git \
+  --set git.secretName=cluster-flux-ssh \
+  --set git.path=examples/secure-cluster \
+  --set git.branch=examples \
+  --set git.pollInterval=1m \
+  --set rbac.pspEnabled=true \
+  --set-file ssh.known_hosts=examples/ssh/known_hosts
 ```
 
 ### Install the operator in `netic-oaas-system` namespace
 In order for this to work your are recommeded to create a separate repo for Team A e.g. on gihthub. Once you have done that, make sure that you copy the contents under `examples/secure-namespace-team-a` in a repo e.g. ´https://github.com/<user>/<team-a-repo>.git´ and update that in the `team-a.yaml` file placed in the `examples/secure-namespace-team-a` folder, and do the same for Team B.
 
 ```bash
-helm upgrade -i helm-operator oaas-helm-operator/helm-operator --set helm.versions=v3 --set allowNamespace=netic-oaas-system --set rbac.pspEnabled=true --set git.ssh.secretName=helm-operator-ssh --set-file git.ssh.known_hosts=examples/ssh/known_hosts --namespace netic-oaas-system
+helm upgrade -i helm-operator oaas-helm-operator/helm-operator \
+  --namespace netic-oaas-system \
+  --set helm.versions=v3 \
+  --set allowNamespace=netic-oaas-system \
+  --set rbac.pspEnabled=true \
+  --set git.ssh.secretName=helm-operator-ssh \
+  --set-file git.ssh.known_hosts=examples/ssh/known_hosts
 ```
 
 
