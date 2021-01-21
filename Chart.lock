@@ -4,6 +4,6 @@ dependencies:
   version: 1.6.2
 - name: helm-operator
   repository: https://neticdk.github.io/helm-operator
-  version: 1.2.1
-digest: sha256:9f6987c2899639a5a0ad4fe035fbd11008b2d48b83d8ebe81e6e75ef2962be2d
-generated: "2021-01-19T15:46:07.468856+01:00"
+  version: 1.2.2
+digest: sha256:d5b2261927b5a7fa3f4784f7a818cd3814054b68fafa526252f0c0d05d07cb29
+generated: "2021-01-21T15:24:25.234685+01:00"
