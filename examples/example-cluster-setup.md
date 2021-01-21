@@ -83,19 +83,6 @@ helm upgrade -i flux oaas-flux/flux \
   --set-file ssh.known_hosts=examples/ssh/known_hosts
 ```
 
-Writeback (Delete)
-```bash
-helm upgrade -i flux oaas-flux/flux \
-  --namespace netic-oaas-system \
-  --set git.url=git@github.com:neticdk/k8s-oaas-sccd.git \
-  --set git.secretName=cluster-flux-ssh \
-  --set git.path=secure-cluster \
-  --set git.branch=examples \
-  --set git.pollInterval=1m \
-  --set rbac.pspEnabled=true \
-  --set-file ssh.known_hosts=examples/ssh/known_hosts
-```
-
 ### Install the operator in `netic-oaas-system` namespace
 In order for this to work your are recommeded to create a separate repo for Team A e.g. on gihthub. Once you have done that, make sure that you copy the contents under `examples/secure-namespace-team-a` in a repo e.g. ´https://github.com/<user>/<team-a-repo>.git´ and update that in the `team-a.yaml` file placed in the `examples/secure-namespace-team-a` folder, and do the same for Team B.
 
@@ -109,6 +96,9 @@ helm upgrade -i helm-operator oaas-helm-operator/helm-operator \
   --set-file git.ssh.known_hosts=examples/ssh/known_hosts
 ```
 
+### Example Configuration for a cluster and two teams
+the cluster configuration is placed on a separate branc `examples` branch under [`secure-cluster`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-cluster) and each of the teams are placed under the same branch. 
+The teams are called [`team-a`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-namespace-team-a) and [`team-b`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-namespace-team-b)
 
 
 
