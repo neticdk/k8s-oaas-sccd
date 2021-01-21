@@ -83,13 +83,13 @@ helm upgrade -i flux oaas-flux/flux \
   --set-file ssh.known_hosts=examples/ssh/known_hosts
 ```
 
-Writeback 
+Writeback (Delete)
 ```bash
 helm upgrade -i flux oaas-flux/flux \
   --namespace netic-oaas-system \
   --set git.url=git@github.com:neticdk/k8s-oaas-sccd.git \
   --set git.secretName=cluster-flux-ssh \
-  --set git.path=examples/secure-cluster \
+  --set git.path=secure-cluster \
   --set git.branch=examples \
   --set git.pollInterval=1m \
   --set rbac.pspEnabled=true \
