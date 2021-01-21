@@ -71,8 +71,11 @@ flux:
         memory: 256Mi
   syncGarbageCollection:
     enabled: true
-  rbac:
+  clusterRole:
     create: false
+  rbac:
+    create: true
+    pspEnabled: true
     rules:
       # FluxCD will patch its own secrets
       - apiGroups: [""]
@@ -90,9 +93,6 @@ flux:
       - apiGroups: ["helm.fluxcd.io"]
         resources: ["helmreleases"]
         verbs: ["*"]
-  serviceAccount:
-    create: false
-    name: flux
 
 # helm-operator installed by subchart
 helm-operator:
@@ -109,18 +109,9 @@ helm-operator:
   clusterRole:
     create: false
   rbac:
-    create: false
+    create: true
+    pspEnabled: true
     rules:
-      # Allow access to the CRD
-      - apiGroups: ["helm.fluxcd.io"]
-        resources: ["helmreleases"]
-        verbs: ["get", "list", "watch", "update"]
-      - apiGroups: ["helm.fluxcd.io"]
-        resources: ["helmreleases/status"]
-        verbs: ["create", "patch", "update"]
-      - apiGroups: ["", "events.k8s.io"]
-        resources: ["events"]
-        verbs: ["create", "patch", "update"]
       # Allow management of resources which are part of deployments in the namespace
       - apiGroups: [""]
         resources: ["services", "configmaps", "secrets", "persistentvolumeclaims"]
@@ -143,6 +134,3 @@ helm-operator:
       - apiGroups: ["policy"]
         resources: ["poddisruptionbudgets"]
         verbs: ["*"]
-  serviceAccount:
-    create: false
-    name: helm-operator
