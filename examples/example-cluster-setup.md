@@ -100,6 +100,18 @@ helm upgrade -i helm-operator oaas-helm-operator/helm-operator \
 the cluster configuration is placed on a separate branc `examples` branch under [`secure-cluster`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-cluster) and each of the teams are placed under the same branch. 
 The teams are called [`team-a`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-namespace-team-a) and [`team-b`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-namespace-team-b)
 
+###Verifying
+Wait until everything is up an running, the last things to happen is seeing nginx and apache nginx running in the two namespaces created for `team-a` and `team-b` repectively. The namespaces are named after the teams. Once you see that is running and ready - it is possible to verify the setup as follows:
+
+Perform a port forward locally:
+```bash
+k port-forward service/netic-oaas-contour-httpproxies-envoy -n netic-oaas-system  4444:80
+```
+
+And find a browser and type `http://localhost:4444`see kuard running (kubernetes up and running demo)
+and check that the teams applications get traffic by typing `http://localhost:4444/team-a` and `http://localhost:4444/team-b`
+That's it.
+
 
 
 
