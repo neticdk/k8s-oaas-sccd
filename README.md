@@ -26,7 +26,7 @@ Currently this is based on FluxCD and Helm Operator and a bunch of default setti
 # Examples
 
 Try out the namespace chart in a cluster:
-*** e.g. in a local cluster [installation](examples/chart-example.md)*** 
+  ***e.g. in a local cluster [installation](examples/chart-example.md)*** 
 
 Another more complete [example of how this is used for teams](examples/example-cluster-setup.md) with a secure cluster definition and two secure namespaces for two teams.
  - Team A
