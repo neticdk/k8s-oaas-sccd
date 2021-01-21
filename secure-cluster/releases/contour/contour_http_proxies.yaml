@@ -12,7 +12,31 @@ spec:
     git: git@github.com:neticdk/k8s-oaas-sccd.git
     ref: main
     path: examples/charts/ingress
-  valuesFrom:
-    - configMapKeyRef:
-        name: poc-kind-contour-httpproxies-values
-        optional: true
+  values:
+    contour:
+      envoy:
+        service:
+          type: ClusterIP
+          externalTrafficPolicy: ""
+    http_proxies:
+      - name: handle-root-context
+        namespace: netic-oaas-system
+        labels:
+          netic.dk/cni.id: root-context-hander
+        spec:
+          virtualhost:
+            fqdn: localhost
+          includes:
+            - name: team-a-proxy
+              namespace: team-a
+              conditions:
+                - prefix: /team-a
+            - name: team-b-proxy
+              namespace: team-b
+              conditions:
+                - prefix: /team-b
+          routes:
+            - services:
+                - name: kuard
+                  port: 80
+
