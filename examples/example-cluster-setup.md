@@ -30,10 +30,14 @@ kind create cluster --config examples/local/k8s.yaml --name oaas-sccd
 - Install the helm operator in the `netic-oaas-system` namespace
 
 ### Add helm repository
-
+for the oaas secure cluster secDevOps Control Plane
 ```bash
 helm repo add oaas-flux https://neticdk.github.io/flux
 helm repo add oaas-helm-operator https://neticdk.github.io/helm-operator
+```
+and for the example below
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
 ### Update Helm dependencies
