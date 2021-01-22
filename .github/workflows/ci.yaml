@@ -28,18 +28,3 @@ jobs:
 
       - name: Run chart-testing (lint)
         run: ct lint --chart-dirs=.. --all --chart-repos neticdkflux=https://neticdk.github.io/flux --chart-repos neticdkhelmop=https://neticdk.github.io/helm-operator
-
-      - name: Run chart-testing (list-changed)
-        id: list-changed
-        run: |
-          changed=$(ct list-changed --target-branch main)
-          if [[ -n "$changed" ]]; then
-            echo "::set-output name=changed::true"
-          fi
-
-      - name: Create kind cluster
-        uses: helm/kind-action@v1.1.0
-        if: steps.list-changed.outputs.changed == 'true'
-
-      - name: Run chart-testing (install)
-        run: ct install --chart-dirs=.. --target-branch main --chart-repos neticdkflux=https://neticdk.github.io/flux --chart-repos neticdkhelmop=https://neticdk.github.io/helm-operator
