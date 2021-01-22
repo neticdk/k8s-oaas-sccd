@@ -27,7 +27,7 @@ jobs:
         uses: helm/chart-testing-action@v2.0.1
 
       - name: Run chart-testing (lint)
-        run: ct lint --all --chart-repos neticdkflux=https://neticdk.github.io/flux --chart-repos neticdkhelmop=https://neticdk.github.io/helm-operator
+        run: ct lint --chart-dirs=.. --all --chart-repos neticdkflux=https://neticdk.github.io/flux --chart-repos neticdkhelmop=https://neticdk.github.io/helm-operator
 
       - name: Run chart-testing (list-changed)
         id: list-changed
@@ -42,4 +42,4 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
-        run: ct install --target-branch main ---chart-repos neticdkflux=https://neticdk.github.io/flux --chart-repos neticdkhelmop=https://neticdk.github.io/helm-operator
+        run: ct install --chart-dirs=.. --target-branch main ---chart-repos neticdkflux=https://neticdk.github.io/flux --chart-repos neticdkhelmop=https://neticdk.github.io/helm-operator
