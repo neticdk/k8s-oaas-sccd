@@ -42,4 +42,4 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
-        run: ct install --chart-dirs=.. --target-branch main ---chart-repos neticdkflux=https://neticdk.github.io/flux --chart-repos neticdkhelmop=https://neticdk.github.io/helm-operator
+        run: ct install --chart-dirs=.. --target-branch main --chart-repos neticdkflux=https://neticdk.github.io/flux --chart-repos neticdkhelmop=https://neticdk.github.io/helm-operator
