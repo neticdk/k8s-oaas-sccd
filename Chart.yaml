@@ -6,7 +6,7 @@ home: https://https://github.com/neticdk/k8s-oaas-sccd
 version: "1.2.0"
 icon: https://www.netic.dk/wp-content/uploads/2020/07/bluelogo-netic-trifork-blue_641px.png
 maintainers:
-  - name: Thor Anker Kvisgård Lange
+  - name: langecode
     email: tal@netic.dk
 dependencies:
   - name: flux
