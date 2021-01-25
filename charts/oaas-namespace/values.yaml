@@ -1,9 +1,9 @@
-# Default values for Netic Namespace chart
-
+---
 global:
+  # -- deploy network policy rules (including default deny rule)
   networkPolicyEnabled: true
 
-# resourceQuota specifies quota restrictions for namespace
+# -- resourceQuota specifies quota restrictions for namespace
 resourceQuota:
   enabled: true
   spec:
@@ -13,7 +13,7 @@ resourceQuota:
       limits.cpu: "2"
       limits.memory: 2Gi
 
-# limitRange can be used to set up the default used if a pod does not provide resource limits and requests
+# -- limitRange can be used to set up the default used if a pod does not provide resource limits and requests
 limitRange:
   enabled: true
   spec:
@@ -26,8 +26,9 @@ limitRange:
           memory: 256Mi
         type: Container
 
-# networkPolicies defines extra policies for namespace
+# -- networkPolicies defines extra policies for namespace
 # E.g., the below policy allowing ingress traffic for port 8080 for any pod/services labelled "netic.dk/network-ingress=default"
+# ```
 # - name: default-ingress
 #   spec:
 #    podSelector:
@@ -41,16 +42,17 @@ limitRange:
 #        ports:
 #        - protocol: TCP
 #          port: 8080
+# ```
 networkPolicies: []
 
-# pspClusterRole makes a rolebinding for the default service account with the given cluster role setting up the
+# -- pspClusterRole makes a rolebinding for the default service account with the given cluster role setting up the
 # default pod security policy for the default service account.
 pspClusterRole: ""
 
-# createServiceAccount to access the namespace with "edit" permissions (https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles)
+# -- createServiceAccount to access the namespace with "edit" permissions (https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles)
 createServiceAccount: false
 
-# flux installed by subchart
+# -- flux installed by subchart (see https://neticdk.github.io/flux)
 flux:
   enabled: true
   resources:
@@ -94,7 +96,7 @@ flux:
         resources: ["helmreleases"]
         verbs: ["*"]
 
-# helm-operator installed by subchart
+# -- helm-operator installed by subchart (see https://neticdk.github.io/helm-operator)
 helm-operator:
   enabled: true
   helm:
