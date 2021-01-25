@@ -1,5 +1,5 @@
 apiVersion: v2
-name: netic-namespace
+name: oaas-namespace
 type: application
 description: A Helm chart to initialize new namespace
 home: https://https://github.com/neticdk/k8s-oaas-sccd

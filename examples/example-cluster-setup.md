@@ -49,7 +49,7 @@ $ helm dependency update .
 ### Create the `netic-oaas-system` namespace
 
 ```bash
-kubectl apply -f examples/netic-oaas-system-bootstrap/namespace.yaml
+kubectl apply -f examples/bootstrap/namespace.yaml
 ```
 
 ### Create secrets for cluster flux
@@ -76,11 +76,11 @@ Create a known_hosts file and replace that in the ssh folder or change the path 
 helm upgrade -i flux oaas-flux/flux \
   --namespace netic-oaas-system \
   --set git.url=git@github.com:neticdk/k8s-oaas-sccd.git \
-  --set git.secretName=cluster-flux-ssh \
+  --set git.branch=examples \
   --set git.path=secure-cluster \
+  --set git.secretName=cluster-flux-ssh \
   --set git.readonly=true \
   --set sync.state=secret \
-  --set git.branch=examples \
   --set git.pollInterval=2m \
   --set rbac.pspEnabled=true \
   --set registry.disableScanning=true \
@@ -109,14 +109,10 @@ Wait until everything is up an running, the last things to happen is seeing ngin
 
 Perform a port forward locally:
 ```bash
-k port-forward service/netic-oaas-contour-httpproxies-envoy -n netic-oaas-system  4444:80
+kubectl port-forward service/netic-oaas-contour-httpproxies-envoy -n netic-oaas-system  4444:80
 ```
 
-And find a browser and type `http://localhost:4444`see kuard running (kubernetes up and running demo)
+And find a browser and type `http://localhost:4444` see kuard running (kubernetes up and running demo)
 and check that the teams applications get traffic by typing `http://localhost:4444/team-a` and `http://localhost:4444/team-b`
+
 That's it.
-
-
-
-
-
