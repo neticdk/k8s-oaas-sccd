@@ -30,7 +30,7 @@ spec:
   chart:
     git: git@github.com:neticdk/k8s-oaas-sccd.git
     ref: main
-    path: /
+    path: charts/oaas-namespace
   values:
     createServiceAccount: true
     networkPolicyEnabled: false
