@@ -18,7 +18,7 @@ If you want a local cluster for the trial it can be setup using kind.
 ### Create the cluster
 
 ```bash
-kind create cluster --config examples/local/k8s.yaml --name oaas-sccd
+$ kind create cluster --config examples/local/k8s.yaml --name oaas-sccd
 ```
 
 ## Install Secure Cluster
@@ -32,12 +32,12 @@ kind create cluster --config examples/local/k8s.yaml --name oaas-sccd
 ### Add helm repository
 for the oaas secure cluster secDevOps Control Plane
 ```bash
-helm repo add oaas-flux https://neticdk.github.io/flux
-helm repo add oaas-helm-operator https://neticdk.github.io/helm-operator
+$ helm repo add oaas-flux https://neticdk.github.io/flux
+$ helm repo add oaas-helm-operator https://neticdk.github.io/helm-operator
 ```
 and for the example below
 ```bash
-helm repo add bitnami https://charts.bitnami.com/bitnami
+$ helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
 ### Update Helm dependencies
@@ -49,7 +49,7 @@ $ helm dependency update .
 ### Create the `netic-oaas-system` namespace
 
 ```bash
-kubectl apply -f examples/bootstrap/namespace.yaml
+$ kubectl apply -f examples/bootstrap/namespace.yaml
 ```
 
 ### Create secrets for cluster flux
@@ -57,7 +57,7 @@ kubectl apply -f examples/bootstrap/namespace.yaml
 Create a keypair for the cluster and replace the private and public files under ssh folder or change the path for the secrets underneath
 
 ```bash
-kubectl create secret generic cluster-flux-ssh --from-file=identity=examples/ssh/cluster --namespace netic-oaas-system
+$ kubectl create secret generic cluster-flux-ssh --from-file=identity=examples/ssh/cluster --namespace netic-oaas-system
 ```
 
 ### Create secrets for operator
@@ -65,7 +65,7 @@ kubectl create secret generic cluster-flux-ssh --from-file=identity=examples/ssh
 Create a keypair for the cluster and replace the private and public files under ssh folder or change the path for the secrets underneath
 
 ```bash
-kubectl create secret generic helm-operator-ssh --from-file=identity=examples/ssh/operator --namespace netic-oaas-system
+$ kubectl create secret generic helm-operator-ssh --from-file=identity=examples/ssh/operator --namespace netic-oaas-system
 ```
 
 ### Install fluxcd in `netic-oaas-system` namespace
@@ -73,7 +73,7 @@ kubectl create secret generic helm-operator-ssh --from-file=identity=examples/ss
 Create a known_hosts file and replace that in the ssh folder or change the path in the command below underneath
 
 ```bash
-helm upgrade -i flux oaas-flux/flux \
+$ helm upgrade -i flux oaas-flux/flux \
   --namespace netic-oaas-system \
   --set git.url=git@github.com:neticdk/k8s-oaas-sccd.git \
   --set git.branch=examples \
@@ -91,7 +91,7 @@ helm upgrade -i flux oaas-flux/flux \
 In order for this to work your are recommeded to create a separate repo for Team A e.g. on gihthub. Once you have done that, make sure that you copy the contents under `examples/secure-namespace-team-a` in a repo e.g. ´https://github.com/<user>/<team-a-repo>.git´ and update that in the `team-a.yaml` file placed in the `examples/secure-namespace-team-a` folder, and do the same for Team B.
 
 ```bash
-helm upgrade -i helm-operator oaas-helm-operator/helm-operator \
+$ helm upgrade -i helm-operator oaas-helm-operator/helm-operator \
   --namespace netic-oaas-system \
   --set helm.versions=v3 \
   --set allowNamespace=netic-oaas-system \
@@ -109,10 +109,10 @@ Wait until everything is up an running, the last things to happen is seeing ngin
 
 Perform a port forward locally:
 ```bash
-kubectl port-forward service/netic-oaas-contour-httpproxies-envoy -n netic-oaas-system  4444:80
+$ kubectl port-forward service/contour-envoy -n netic-oaas-system 4444:80
 ```
 
 And find a browser and type `http://localhost:4444` see kuard running (kubernetes up and running demo)
-and check that the teams applications get traffic by typing `http://localhost:4444/team-a` and `http://localhost:4444/team-b`
+and check that the teams applications get traffic by typing `http://localhost:4444/team-a` and `http://localhost:4444/team-b` or use curl.
 
 That's it.
