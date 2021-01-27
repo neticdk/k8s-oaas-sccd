@@ -108,7 +108,7 @@ kustomize:
 # -- helm-operator installed by subchart (see https://neticdk.github.io/helm-operator)
 # This is kept currently to allow a smooth transition from Helm Operator to helm-controller of flux2
 helm-operator:
-  enabled: true
+  enabled: false
   helm:
     versions: "v3"
   resources:
