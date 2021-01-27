@@ -66,6 +66,8 @@ spec:
         name: team-b-flux-ssh
     kustomize:
       path: secure-namespace-team-b
+    helm-operator:
+      enabled: true
 ---
 # Allow communication between pods in namespace
 apiVersion: networking.k8s.io/v1
