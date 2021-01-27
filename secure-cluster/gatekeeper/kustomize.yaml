@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+metadata:
+  name: flux-service-account-template
+resources:
+  - flux-service-account-template.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+dependsOn:
+  - flux-service-account-template
+resources:
+  - flux-service-account-constraint.yaml
