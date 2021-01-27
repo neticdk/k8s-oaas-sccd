@@ -1,0 +1,19 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: gatekeeper
+  namespace: netic-oaas-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: gatekeeper
+      version: "3.2.2"
+      sourceRef:
+        kind: HelmRepository
+        name: gatekeeper
+        namespace: netic-oaas-system
+      interval: 5m
+  targetNamespace: netic-oaas-system
+  releaseName: gatekeeper

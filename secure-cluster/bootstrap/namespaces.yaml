@@ -12,5 +12,5 @@ spec:
     kind: GitRepository
     name: examples-flux2
   path: ./secure-cluster/namespaces
-  prune: false
+  prune: true
   validation: client

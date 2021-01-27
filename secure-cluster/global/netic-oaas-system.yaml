@@ -42,3 +42,12 @@ metadata:
 spec:
   url: https://charts.bitnami.com/bitnami
   interval: 10m
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: gatekeeper
+  namespace: netic-oaas-system
+spec:
+  url: https://open-policy-agent.github.io/gatekeeper/charts
+  interval: 10m
