@@ -11,5 +11,5 @@ spec:
   ref: {{ . | toYaml | nindent 4 }}
   {{- end }}
   {{- with .Values.git.secretRef }}
-  secretRef: {{ . | toYaml | nindent 4 }}
+  secretRef: {{ . | toYaml | nindent 4 }}
   {{- end }}
