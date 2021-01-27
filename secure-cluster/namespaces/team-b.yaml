@@ -40,48 +40,30 @@ spec:
     networkPolicyEnabled: false
     resourceQuota:
       enabled: false
-    flux:
-      git:
-        url: git@github.com:neticdk/k8s-oaas-sccd.git
+    rbac:
+      enabled: true
+      rules:
+        # The next is resources directly managed by flux - here only helm releases
+        - apiGroups: ["helm.fluxcd.io"]
+          resources: ["helmreleases"]
+          verbs: ["*"]
+        - apiGroups: [""]
+          resources: ["services", "configmaps", "secrets"]
+          verbs: ["*"]
+        - apiGroups: ["apps"]
+          resources: ["deployments", "daemonset", "statefulsets"]
+          verbs: ["*"]
+        - apiGroups: ["projectcontour.io"]
+          resources: ["httpproxies"]
+          verbs: ["*"]
+    git:
+      url: ssh://git@github.com/neticdk/k8s-oaas-sccd.git
+      ref:
         branch: examples
-        path: secure-namespace-team-b
-        secretName: team-b-flux-ssh
-        pollInterval: 2m
-        readonly: true
-      sync:
-        state: secret
-      ssh:
-        known_hosts: "github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDs66HKAHEIkxrk8uYEu5fzbdwk7mB9xpzZVTMlfcdgvA8AjREJ6ohtFI74XrPVNgM/lf2lVe/6wextvzAZ+yQVsTnmiyd+OUY1BCzeVitPL798+F6eBk6KQZ49ObsR7IviPu0AJWLLD2fCE1h1Vlo5j/NYLxPGWCKDieUlIIAXH9LyLJOKZomOm9Q37wqonzEC+Xkl7O2gspnsKjXzLKfzTWrf94eehK9nLBVTh+WHpbNyJV4CeTb7soKQK75TkQ/EcwOWK7QzQXALJps/03NvCbZyLST6CXgdFUEmPNNTl5skeY9WRUCXOs/P4aEV1nuTUGe7/b6U1xMubzLFSZqiAOAJxxX4zGJbwWdMJrZjSfVwjq/uKuu+KknUsr5gk9NeECQsjVuXKv37RIlP594zhBLPfNN28vHUpuTOUAxD6KhztyyCKwkTNLAZKJG6xYgTCrexN9FQKzBm8Ak4TIuXi0ioin88TSAQuxQqIr9NuzqfRGJduUY6EwceVw4yo8s= fluxcd-ssh-key/neticdk-k8s-oaas-sccd@github\n"
-      registry:
-        disableScanning: true
-      rbac:
-        create: true
-        rules:
-          # FluxCD will patch its own secrets
-          - apiGroups: [""]
-            resources: ["secrets"]
-            verbs: ["patch"]
-          # Below is needed for automatic image promotion (even through Helm Operator)
-          - apiGroups: ["apps"]
-            resources: ["deployments", "daemonset", "statefulset"]
-            verbs: ["get", "list", "watch"]
-          # The next is needed for pulling images from private registries (handling image promotion)
-          - apiGroups: [""]
-            resources: ["secrets", "serviceaccounts"]
-            verbs: ["get", "list", "watch"]
-          # The next is resources directly managed by flux - here only helm releases
-          - apiGroups: ["helm.fluxcd.io"]
-            resources: ["helmreleases"]
-            verbs: ["*"]
-          - apiGroups: [""]
-            resources: ["services", "configmaps", "secrets"]
-            verbs: ["*"]
-          - apiGroups: ["apps"]
-            resources: ["deployments", "statefulsets"]
-            verbs: ["*"]
-          - apiGroups: ["projectcontour.io"]
-            resources: ["httpproxies"]
-            verbs: ["*"]
+      secretRef:
+        name: team-a-flux-ssh
+    kustomize:
+      path: secure-namespace-team-b
 ---
 # Allow communication between pods in namespace
 apiVersion: networking.k8s.io/v1
