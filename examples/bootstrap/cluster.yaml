@@ -8,7 +8,7 @@ spec:
   interval: 1m
   url: ssh://git@github.com/neticdk/k8s-oaas-sccd.git
   ref:
-    branch: examples-flux2-migration
+    branch: examples-flux2
   secretRef:
     name: cluster-flux-ssh
 ---
