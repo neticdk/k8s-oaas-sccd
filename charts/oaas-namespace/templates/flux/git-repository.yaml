@@ -8,8 +8,8 @@ spec:
   interval: {{ .Values.git.interval }}
   url: {{ .Values.git.url }}
   {{- with .Values.git.ref }}
-  ref: {{ . | nindent 4 }}
+  ref: {{ . | toYaml | nindent 4 }}
   {{- end }}
   {{- with .Values.git.secretRef }}
-  secretRef: {{ . | nindent 4 }}
+  secretRef: {{ . | toYaml | nindent 4 }}
   {{- end }}
