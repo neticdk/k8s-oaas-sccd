@@ -52,9 +52,10 @@ pspClusterRole: ""
 # -- createServiceAccount to access the namespace with "edit" permissions (https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles)
 createServiceAccount: false
 
-# -- enable restrictive access for flux in namespace
 rbac:
+  # -- restrict access to namespace
   enabled: true
+  # -- default rules restricting access to namespace
   rules:
     - apiGroups: [""]
       resources: ["services", "configmaps", "secrets", "persistentvolumeclaims"]
@@ -106,6 +107,7 @@ kustomize:
   prune: true
 
 # -- helm-operator installed by subchart (see https://neticdk.github.io/helm-operator)
+# DEPRECATED!
 # This is kept currently to allow a smooth transition from Helm Operator to helm-controller of flux2
 helm-operator:
   enabled: false

@@ -25,14 +25,4 @@ Currently this is based on FluxCD and Helm Operator and a bunch of default setti
 
 # Examples
 
-Try out the namespace chart in a cluster:
-  ***e.g. in a local cluster [installation](examples/chart-example.md)*** 
-
-Another more complete [example of how this is used for teams](examples/example-cluster-setup.md) with a secure cluster definition and two secure namespaces for two teams.
- - Team A
- - Team B 
-
-Each team is having their own gitops engine deployed locally into each their namespace and a common specification for how their ingress can be done in order to allow these two teams to work independently. 
-
-
-
+An example using the `oaas-namespace` chart creating namespaces for two teams is found under [examples](examples).
