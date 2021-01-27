@@ -1,0 +1,30 @@
+createServiceAccount: true
+networkPolicyEnabled: false
+resourceQuota:
+  enabled: false
+rbac:
+  enabled: true
+  rules:
+    # The next is resources directly managed by flux - here only helm releases
+    - apiGroups: ["helm.fluxcd.io"]
+      resources: ["helmreleases"]
+      verbs: ["*"]
+    - apiGroups: [""]
+      resources: ["services", "configmaps", "secrets"]
+      verbs: ["*"]
+    - apiGroups: ["apps"]
+      resources: ["deployments", "daemonset", "statefulsets"]
+      verbs: ["*"]
+    - apiGroups: ["projectcontour.io"]
+      resources: ["httpproxies"]
+      verbs: ["*"]
+git:
+  url: ssh://git@github.com/neticdk/k8s-oaas-sccd.git
+  ref:
+    branch: examples
+  secretRef:
+    name: team-a-flux-ssh
+kustomize:
+  path: secure-namespace-team-a
+helm-operator:
+  enabled: true

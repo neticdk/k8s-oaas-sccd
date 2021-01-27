@@ -1,0 +1,27 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: examples-flux2
+  namespace: netic-gitops-system
+spec:
+  interval: 1m
+  url: ssh://git@github.com/neticdk/k8s-oaas-sccd.git
+  ref:
+    branch: examples-flux2-migration
+  secretRef:
+    name: cluster-flux-ssh
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: secure-cluster
+  namespace: netic-gitops-system
+spec:
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: examples-flux2
+  prune: false
+  validation: client
+  path: secure-cluster/bootstrap
