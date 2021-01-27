@@ -6,7 +6,7 @@ metadata:
   labels: {{ include "oaas-namespace.flux.labels" . | nindent 4 }}
 spec:
 {{- if .Values.rbac.enabled }}
-  serviceAccount: {{ include "oaas-namespace.flux.serviceAccountName" . }}
+  serviceAccountName: {{ include "oaas-namespace.flux.serviceAccountName" . }}
 {{- end }}
   interval: {{ .Values.kustomize.interval }}
   sourceRef:
