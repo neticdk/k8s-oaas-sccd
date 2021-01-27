@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: gatekeeper
+  name: gatekeeper-templates
   namespace: netic-gitops-system
 spec:
   dependsOn:
@@ -11,6 +11,22 @@ spec:
   sourceRef:
     kind: GitRepository
     name: examples-flux2
-  path: ./secure-cluster/gatekeeper
+  path: ./secure-cluster/gatekeeper/templates
+  prune: true
+  validation: client
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: gatekeeper-constraints
+  namespace: netic-gitops-system
+spec:
+  dependsOn:
+    - name: gatekeeper-templates
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: examples-flux2
+  path: ./secure-cluster/gatekeeper/constraints
   prune: true
   validation: client
