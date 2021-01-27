@@ -70,8 +70,11 @@ kubectl apply -f examples/bootstrap/cluster.yaml
 ```
 
 ### Example Configuration for a cluster and two teams
-The cluster configuration is placed on a separate branch `examples` in directory [`secure-cluster`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-cluster). Each of the teams are placed under the same branch.
-The teams are called [`team-a`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-namespace-team-a) and [`team-b`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-namespace-team-b)
+The cluster configuration is placed on a separate branch `examples-flux2` in directory [`secure-cluster`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples-flux2/secure-cluster).
+The teams are called [`team-a`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-namespace-team-a) and [`team-b`](https://github.com/neticdk/k8s-oaas-sccd/tree/examples/secure-namespace-team-b).
+
+_Note_ to show how teams might not even notice any difference between Flux and flux2 the teams are
+reconciled from the `examples` branch both for the Flux and flux2 example.
 
 ### Verifying
 Wait until everything is up an running, the last things to happen is seeing nginx and apache nginx running in the two namespaces created for `team-a` and `team-b` repectively. The namespaces are named after the teams. Once you see that is running and ready - it is possible to verify the setup as follows:
