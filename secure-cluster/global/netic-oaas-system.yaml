@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: netic-oaas-system
+  labels:
+    netic.dk/owner: netic
+    netic.dk/origin: netic-oaas-system
+    netic.dk/type: system-space
+    netic.dk/cni.id: netic-oaas-system
+    istio-injection: disabled
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: k8s-oaas-sccd
+  namespace: netic-ooas-system
+spec:
+  interval: 5m
+  url: ssh://git@github.com/neticdk/k8s-oaas-sccd.git
+  ref:
+    branch: feature/flux2-gotk
+  secretRef:
+    name: cluster-flux-ssh
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: bitnami
+  namespace: netic-oaas-system
+spec:
+  url: https://charts.bitnami.com/bitnami
+  interval: 10m

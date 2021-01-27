@@ -1,0 +1,16 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: releases
+  namespace: netic-gitops-system
+spec:
+  dependsOn:
+    - name: namespaces
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: examples-flux2
+  path: ./secure-cluster/releases
+  prune: false
+  validation: client

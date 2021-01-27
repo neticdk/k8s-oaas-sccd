@@ -1,0 +1,16 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: ingress
+  namespace: netic-gitops-system
+spec:
+  dependsOn:
+    - name: releases
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: examples-flux2
+  path: ./secure-cluster/ingress
+  prune: false
+  validation: client
