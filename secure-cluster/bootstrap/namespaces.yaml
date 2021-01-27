@@ -5,6 +5,8 @@ metadata:
   name: namespaces
   namespace: netic-gitops-system
 spec:
+  dependsOn:
+    - name: ingress
   interval: 5m
   sourceRef:
     kind: GitRepository

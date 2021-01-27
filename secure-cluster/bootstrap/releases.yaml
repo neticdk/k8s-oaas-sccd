@@ -5,8 +5,6 @@ metadata:
   name: releases
   namespace: netic-gitops-system
 spec:
-  dependsOn:
-    - name: namespaces
   interval: 5m
   sourceRef:
     kind: GitRepository
