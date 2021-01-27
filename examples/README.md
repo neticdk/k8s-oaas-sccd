@@ -53,10 +53,7 @@ current in your kube config.
 flux install -n netic-gitops-system \
   --components=source-controller,kustomize-controller,helm-controller,notification-controller \
   --network-policy=true \
-  --watch-all-namespaces=true \
-  --export \
-  | sed 's/namespace: flux-system/namespace: netic-gitops-system/' \
-  | kubectl apply -f -
+  --watch-all-namespaces=true
 ```
 
 ### Deploy Bootstrap Configuration
