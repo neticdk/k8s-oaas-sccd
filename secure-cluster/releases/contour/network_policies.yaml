@@ -12,12 +12,12 @@ spec:
   policyTypes:
     - Egress
     - Ingress
-  ingress:
-    - ports:
-      - protocol: TCP
-        port: 8001
-      - protocol: TCP
-        port: 8000
+  ingress: []
+#    - ports:
+#      - protocol: TCP
+#        port: 8001
+#      - protocol: TCP
+#        port: 8000
   egress:
     - ports:  # API server?
       - protocol: TCP
@@ -39,10 +39,12 @@ spec:
   ingress:
     - ports:
       - protocol: TCP
-        port: 80
+        port: http
       - protocol: TCP
-        port: 443
-  egress:
-    - ports:  # API server?
+        port: https
       - protocol: TCP
-        port: 8001
+        port: metrics
+  egress: []
+#    - ports:
+#      - protocol: TCP
+#        port: 8001
