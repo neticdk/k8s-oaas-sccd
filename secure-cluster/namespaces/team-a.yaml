@@ -47,8 +47,8 @@ spec:
           ingress:
             - from:  # Contour ingress controller
               - namespaceSelector:
-                matchLabels:
-                  name: netic-oaas-system
+                  matchLabels:
+                    name: netic-oaas-system
               ports:
                 - protocol: TCP
                   port: http
