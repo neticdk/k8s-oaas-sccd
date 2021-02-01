@@ -44,7 +44,12 @@ spec:
         port: https
       - protocol: TCP
         port: metrics
-  egress: []
-#    - ports:
-#      - protocol: TCP
-#        port: 8001
+  egress:
+    - ports:  # Allow DNS requests
+      - port: 53
+        protocol: UDP
+      - port: 53
+        protocol: TCP
+    - ports:  # Contour management
+      - protocol: TCP
+        port: 8001
