@@ -2,17 +2,80 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-contour-apiserver-access
+  name: contour-contour
   namespace: netic-oaas-system
 spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: contour
+      app.kubernetes.io/component: contour
   policyTypes:
     - Egress
+    - Ingress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: contour
+            app.kubernetes.io/component: envoy
+      ports:
+      - protocol: TCP
+        port: xds
   egress:
+    - ports:  # DNS and API server
+      - port: 53
+        protocol: UDP
+      - port: 53
+        protocol: TCP
+      - port: 443
+        protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: contour-envoy
+  namespace: netic-oaas-system
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: contour
+      app.kubernetes.io/component: envoy
+  policyTypes:
+    - Egress
+    - Ingress
+  ingress:
     - ports:
       - protocol: TCP
-        port: 443
+        port: http
       - protocol: TCP
-        port: 6443
+        port: https
+      - protocol: TCP
+        port: metrics
+  egress:
+    - ports:  # Allow DNS requests
+      - port: 53
+        protocol: UDP
+      - port: 53
+        protocol: TCP
+    - to:  # Contour management
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: contour
+            app.kubernetes.io/component: contour
+      ports:
+      - protocol: TCP
+        port: xds
+    - to:
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: kuard
+            app.kubernetes.io/instance: kuard-root
+      - namespaceSelector:
+          matchLabels:
+            name: team-a
+      - namespaceSelector:
+          matchLabels:
+            name: team-b
+      ports:
+      - protocol: TCP
+        port: http

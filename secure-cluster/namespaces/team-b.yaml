@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   name: team-b
   labels:
+    name: team-b
     customer.dk/owner: customer
     customer.dk/origin: team-b
     customer.dk/type: application-space
@@ -39,7 +40,23 @@ spec:
   releaseName: bootstrap-team-b
   values:
     createServiceAccount: true
-    networkPolicyEnabled: false
+    networkPolicyEnabled: true
+    networkPolicies:
+      - name: apache-ingress
+        spec:
+          podSelector:
+            matchLabels:
+              netic.dk/network-ingress: apache
+          policyTypes:
+            - Ingress
+          ingress:
+            - from:  # Contour ingress controller
+              - namespaceSelector:
+                  matchLabels:
+                    name: netic-oaas-system
+              ports:
+                - protocol: TCP
+                  port: http
     resourceQuota:
       enabled: false
     rbac:
@@ -68,33 +85,3 @@ spec:
       path: secure-namespace-team-b
     helm-operator:
       enabled: true
----
-# Allow communication between pods in namespace
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-team-b-pod-to-pod
-  namespace: team-b
-spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - podSelector: {}
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: team-b-apache
-  namespace: team-b
-spec:
-  podSelector:
-    matchLabels:
-      app: apache
-  policyTypes:
-    - Ingress
-  ingress:
-    - ports:
-        - protocol: TCP
-          port: 80

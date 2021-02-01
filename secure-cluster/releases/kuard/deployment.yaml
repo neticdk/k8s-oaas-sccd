@@ -4,18 +4,26 @@ kind: Deployment
 metadata:
   namespace: netic-oaas-system
   labels:
-    app: kuard
+    app.kubernetes.io/name: kuard
+    app.kubernetes.io/instance: kuard-root
+    app.kubernetes.io/version: "1"
   name: kuard
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: kuard
+      app.kubernetes.io/name: kuard
+      app.kubernetes.io/instance: kuard-root
   template:
     metadata:
       labels:
-        app: kuard
+        app.kubernetes.io/name: kuard
+        app.kubernetes.io/instance: kuard-root
+        app.kubernetes.io/version: "1"
     spec:
       containers:
-        - image: gcr.io/kuar-demo/kuard-amd64:1
-          name: kuard
+        - name: kuard
+          image: gcr.io/kuar-demo/kuard-amd64:1
+          ports:
+            - name: http
+              containerPort: 8080

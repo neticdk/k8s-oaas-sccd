@@ -5,13 +5,18 @@ kind: NetworkPolicy
 metadata:
   name: allow-kuard-ingress
   namespace: netic-oaas-system
+  labels:
+    app.kubernetes.io/name: kuard
+    app.kubernetes.io/instance: kuard-root
+    app.kubernetes.io/version: "1"
 spec:
   podSelector:
     matchLabels:
-      app: kuard
+      app.kubernetes.io/name: kuard
+      app.kubernetes.io/instance: kuard-root
   policyTypes:
     - Ingress
   ingress:
     - ports:
         - protocol: TCP
-          port: 8080
+          port: http
