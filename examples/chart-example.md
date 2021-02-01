@@ -25,7 +25,7 @@ brew install kind
 All the following commands assume current directory is the chart root.
 Starting up a local kind cluster on the cluster definition `examples/local/kind-cluster.yaml`.
 ```bash
-$ kind create cluster --name oaas --config examples/local/k8s.yaml 
+$ kind create cluster --name oaas --config examples/local/kind-default-cluster.yaml
 ```
 ### Access the created local kind cluster
 ```bash

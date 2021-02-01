@@ -18,7 +18,14 @@ If you want a local cluster for the trial it can be setup using kind.
 ### Create the cluster
 
 ```bash
-$ kind create cluster --config examples/local/k8s.yaml --name oaas-sccd
+$ kind create cluster --config examples/local/kind-default-cluster.yaml --name oaas-sccd
+```
+
+or create cluster with Calico to verify network policies
+
+```bash
+$ kind create cluster --config examples/local/kind-calico-cluster.yaml --name oaas-sccd
+$ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 ```
 
 ## Install Secure Cluster

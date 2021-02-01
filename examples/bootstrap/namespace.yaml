@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   name: netic-oaas-system
   labels:
+    name: netic-oaas-system
     netic.dk/owner: netic
     netic.dk/origin: netic-oaas-system
     netic.dk/type: system-space
