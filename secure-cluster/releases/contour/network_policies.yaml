@@ -20,7 +20,7 @@ spec:
             app.kubernetes.io/component: envoy
       ports:
       - protocol: TCP
-        port: 8001
+        port: xds
   egress:
     - ports:  # DNS and API server
       - port: 53
@@ -64,19 +64,18 @@ spec:
             app.kubernetes.io/component: contour
       ports:
       - protocol: TCP
-        port: 8001
+        port: xds
     - to:
       - podSelector:
           matchLabels:
             app.kubernetes.io/name: kuard
             app.kubernetes.io/instance: kuard-root
-      ports:
-      - protocol: TCP
-        port: http
-    - to:
       - namespaceSelector:
           matchLabels:
             name: team-a
       - namespaceSelector:
           matchLabels:
             name: team-b
+      ports:
+      - protocol: TCP
+        port: http
