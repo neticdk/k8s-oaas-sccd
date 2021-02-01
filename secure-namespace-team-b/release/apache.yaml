@@ -5,7 +5,9 @@ metadata:
   name: apache-configmap
   namespace: team-b
   labels:
-    app: apache
+    app.kubernetes.io/name: apache
+    app.kubernetes.io/instance: apache-team-b
+    app.kubernetes.io/version: 2.4.46
 data:
   index.html: |
     <h1>Hello World - in team B we run apache!</h1>
@@ -17,22 +19,29 @@ metadata:
   name: apache-deployment
   namespace: team-b
   labels:
-    app: apache
+    app.kubernetes.io/name: apache
+    app.kubernetes.io/instance: apache-team-b
+    app.kubernetes.io/version: 2.4.46
 spec:
   selector:
     matchLabels:
-      app: apache
+      app.kubernetes.io/name: apache
+      app.kubernetes.io/instance: apache-team-b
   replicas: 3
   template:
     metadata:
       labels:
-        app: apache
+        app.kubernetes.io/name: apache
+        app.kubernetes.io/instance: apache-team-b
+        app.kubernetes.io/version: 2.4.46
+        netic.dk/network-ingress: apache
     spec:
       containers:
-      - name: cntr-httpd
+      - name: httpd
         image: httpd:2.4.46
         ports:
-        - containerPort: 80
+        - name: http
+          containerPort: 80
         volumeMounts:
           - mountPath: /usr/local/apache2/htdocs/index.html
             name: apache-conf
@@ -53,11 +62,14 @@ metadata:
   name: apache-service
   namespace: team-b
   labels:
-    app: apache
+    app.kubernetes.io/name: apache
+    app.kubernetes.io/instance: apache-team-b
+    app.kubernetes.io/version: 2.4.46
 spec:
   ports:
-    - port: 80
-      targetPort: 80
+    - name: http
+      port: 80
+      targetPort: http
       protocol: TCP
   selector:
     app: apache
