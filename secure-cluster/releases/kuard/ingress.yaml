@@ -5,7 +5,9 @@ metadata:
   name: kuard
   namespace: netic-oaas-system
   labels:
-    app: kuard
+    app.kubernetes.io/name: kuard
+    app.kubernetes.io/instance: kuard-root
+    app.kubernetes.io/version: "1"
 spec:
   rules:
     - http:

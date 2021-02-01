@@ -4,14 +4,17 @@ kind: Service
 metadata:
   namespace: netic-oaas-system
   labels:
-    app: kuard
+    app.kubernetes.io/name: kuard
+    app.kubernetes.io/instance: kuard-root
+    app.kubernetes.io/version: "1"
   name: kuard
 spec:
-  ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 8080
-  selector:
-    app: kuard
-  sessionAffinity: None
   type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: kuard
+    app.kubernetes.io/instance: kuard-root

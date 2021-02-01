@@ -65,3 +65,18 @@ spec:
       ports:
       - protocol: TCP
         port: 8001
+    - to:
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: kuard
+            app.kubernetes.io/instance: kuard-root
+      ports:
+      - protocol: TCP
+        port: http
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            name: team-a
+      - namespaceSelector:
+          matchLabels:
+            name: team-b
