@@ -39,6 +39,13 @@ If you want a local cluster for the trial it can be setup using kind - a sample 
 kind create cluster --config examples/local/k8s.yaml --name oaas-sccd
 ```
 
+Or create cluster with the Calico CNI to verify network policies.
+
+```bash
+kind create cluster --config examples/local/kind-calico-cluster.yaml --name oaas-sccd
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+```
+
 ## Install the Secure Cluster
 
 - Install flux components
