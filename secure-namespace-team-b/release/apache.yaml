@@ -72,4 +72,5 @@ spec:
       targetPort: http
       protocol: TCP
   selector:
-    app: apache
+    app.kubernetes.io/name: apache
+    app.kubernetes.io/instance: apache-team-b
