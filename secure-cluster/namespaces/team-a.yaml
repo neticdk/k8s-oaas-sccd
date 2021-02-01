@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   name: team-a
   labels:
+    name: team-a
     customer.dk/owner: customer
     customer.dk/origin: team-a
     customer.dk/type: application-space
