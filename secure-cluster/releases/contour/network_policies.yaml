@@ -12,16 +12,23 @@ spec:
   policyTypes:
     - Egress
     - Ingress
-  ingress: []
-#    - ports:
-#      - protocol: TCP
-#        port: 8001
-#      - protocol: TCP
-#        port: 8000
-  egress:
-    - ports:  # API server?
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: contour
+            app.kubernetes.io/component: envoy
+      ports:
       - protocol: TCP
-        port: 443
+        port: 8001
+  egress:
+    - ports:  # DNS and API server
+      - port: 53
+        protocol: UDP
+      - port: 53
+        protocol: TCP
+      - port: 443
+        protocol: TCP
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -50,6 +57,11 @@ spec:
         protocol: UDP
       - port: 53
         protocol: TCP
-    - ports:  # Contour management
+    - to:  # Contour management
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: contour
+            app.kubernetes.io/component: contour
+      ports:
       - protocol: TCP
         port: 8001
