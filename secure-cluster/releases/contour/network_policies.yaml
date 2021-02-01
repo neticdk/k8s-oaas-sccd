@@ -2,17 +2,47 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-contour-apiserver-access
+  name: contour-contour
   namespace: netic-oaas-system
 spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: contour
+      app.kubernetes.io/component: contour
   policyTypes:
     - Egress
-  egress:
+    - Ingress
+  ingress:
     - ports:
       - protocol: TCP
-        port: 443
+        port: 8001
       - protocol: TCP
-        port: 6443
+        port: 8000
+  egress:
+    - ports:  # API server?
+      - protocol: TCP
+        port: 443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: contour-envoy
+  namespace: netic-oaas-system
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: contour
+      app.kubernetes.io/component: envoy
+  policyTypes:
+    - Egress
+    - Ingress
+  ingress:
+    - ports:
+      - protocol: TCP
+        port: 80
+      - protocol: TCP
+        port: 443
+  egress:
+    - ports:  # API server?
+      - protocol: TCP
+        port: 8001
