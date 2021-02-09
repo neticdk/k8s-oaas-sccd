@@ -95,6 +95,9 @@ flux:
       - apiGroups: ["helm.fluxcd.io"]
         resources: ["helmreleases"]
         verbs: ["*"]
+      - apiGroups: ["kubernetes-client.io"]
+        resources: ["externalsecrets"]
+        verbs: ["*"]
 
 # -- helm-operator installed by subchart (see https://neticdk.github.io/helm-operator)
 helm-operator:
@@ -135,4 +138,7 @@ helm-operator:
         verbs: ["*"]
       - apiGroups: ["policy"]
         resources: ["poddisruptionbudgets"]
+        verbs: ["*"]
+      - apiGroups: ["kubernetes-client.io"]
+        resources: ["externalsecrets"]
         verbs: ["*"]
