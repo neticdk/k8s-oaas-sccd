@@ -81,6 +81,9 @@ rbac:
     - apiGroups: ["helm.toolkit.fluxcd.io"]
       resources: ["helmreleases"]
       verbs: ["*"]
+    - apiGroups: ["kubernetes-client.io"]
+      resources: ["externalsecrets"]
+      verbs: ["*"]
     # allow for "old" Helm Operator based releases for now
     - apiGroups: ["helm.fluxcd.io"]
       resources: ["helmreleases"]
@@ -147,4 +150,7 @@ helm-operator:
         verbs: ["*"]
       - apiGroups: ["policy"]
         resources: ["poddisruptionbudgets"]
+        verbs: ["*"]
+      - apiGroups: ["kubernetes-client.io"]
+        resources: ["externalsecrets"]
         verbs: ["*"]
