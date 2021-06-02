@@ -1,4 +1,4 @@
 # GitHub Pages
 
-Contains Helm chart releases
+GitHub Pages is used to publish Helm chart releases.
 
