@@ -14,6 +14,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install extra tooling
+        run: |
+          GO111MODULE=on go get github.com/norwoodj/helm-docs/cmd/helm-docs
+
       - name: Render documentation
         run: |
           export PATH=$PATH:$(go env GOPATH)/bin
