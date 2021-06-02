@@ -1,9 +1,6 @@
 dependencies:
-- name: flux
-  repository: https://neticdk.github.io/flux
-  version: 1.6.2
 - name: helm-operator
   repository: https://neticdk.github.io/helm-operator
   version: 1.2.2
-digest: sha256:d5b2261927b5a7fa3f4784f7a818cd3814054b68fafa526252f0c0d05d07cb29
-generated: "2021-01-21T15:24:25.234685+01:00"
+digest: sha256:5148536d7fcb4688a895043207bcf1b4d7437173bb4003872cbe7b7da2085cd6
+generated: "2021-01-27T11:05:57.774455+01:00"

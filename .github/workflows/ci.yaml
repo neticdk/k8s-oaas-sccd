@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - feature/flux2-gotk
 
 jobs:
   charts-test:

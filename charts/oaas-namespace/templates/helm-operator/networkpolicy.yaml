@@ -2,8 +2,8 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ template "netic.helmop.fullname" . }}
-  labels: {{ include "netic.helmop.labels" . | nindent 4 }}
+  name: {{ template "oaas-namespace.helmop.fullname" . }}
+  labels: {{ include "oaas-namespace.helmop.labels" . | nindent 4 }}
 spec:
   podSelector:
     matchLabels:

@@ -1,0 +1,15 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: {{ template "oaas-namespace.flux.fullname" . }}
+  labels: {{ include "oaas-namespace.flux.labels" . | nindent 4 }}
+spec:
+  interval: {{ .Values.git.interval }}
+  url: {{ .Values.git.url }}
+  {{- with .Values.git.ref }}
+  ref: {{ . | toYaml | nindent 4 }}
+  {{- end }}
+  {{- with .Values.git.secretRef }}
+  secretRef: {{ . | toYaml | nindent 4 }}
+  {{- end }}

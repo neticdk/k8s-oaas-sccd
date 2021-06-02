@@ -52,56 +52,68 @@ pspClusterRole: ""
 # -- createServiceAccount to access the namespace with "edit" permissions (https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles)
 createServiceAccount: false
 
-# -- flux installed by subchart (see https://neticdk.github.io/flux)
-flux:
+rbac:
+  # -- restrict access to namespace
   enabled: true
-  resources:
-    requests:
-      cpu: 75m
-      memory: 64Mi
-    limits:
-      cpu: 75m
-      memory: 128Mi
-  memcached:
-    enabled: true
-    resources:
-      requests:
-        cpu: 50m
-        memory: 64Mi
-      limits:
-        cpu: 50m
-        memory: 256Mi
-  syncGarbageCollection:
-    enabled: true
-  clusterRole:
-    create: false
-  rbac:
-    create: true
-    pspEnabled: true
-    rules:
-      # FluxCD will patch its own secrets
-      - apiGroups: [""]
-        resources: ["secrets"]
-        verbs: ["patch"]
-      # Below is needed for automatic image promotion (even through Helm Operator)
-      - apiGroups: ["apps"]
-        resources: ["deployments", "daemonset", "statefulset"]
-        verbs: ["get", "list", "watch"]
-      # The next is needed for pulling images from private registries (handling image promotion)
-      - apiGroups: [""]
-        resources: ["secrets", "serviceaccounts"]
-        verbs: ["get", "list", "watch"]
-      # The next is resources directly managed by flux - here only helm releases
-      - apiGroups: ["helm.fluxcd.io"]
-        resources: ["helmreleases"]
-        verbs: ["*"]
-      - apiGroups: ["kubernetes-client.io"]
-        resources: ["externalsecrets"]
-        verbs: ["*"]
+  # -- default rules restricting access to namespace
+  rules:
+    - apiGroups: [""]
+      resources: ["services", "configmaps", "secrets", "persistentvolumeclaims"]
+      verbs: ["*"]
+    - apiGroups: ["apps"]
+      resources: ["deployments", "daemonset", "statefulsets"]
+      verbs: ["*"]
+    - apiGroups: ["batch"]
+      resources: ["cronjobs", "jobs"]
+      verbs: ["*"]
+    - apiGroups: ["extensions", "networking.k8s.io"]
+      resources: ["ingresses"]
+      verbs: ["*"]
+    - apiGroups: ["monitoring.coreos.com"]
+      resources: ["servicemonitors", "podmonitors", "prometheusrules", "probes"]
+      verbs: ["*"]
+    - apiGroups: ["projectcontour.io"]
+      resources: ["httpproxies"]
+      verbs: ["*"]
+    - apiGroups: ["policy"]
+      resources: ["poddisruptionbudgets"]
+      verbs: ["*"]
+    - apiGroups: ["helm.toolkit.fluxcd.io"]
+      resources: ["helmreleases"]
+      verbs: ["*"]
+    - apiGroups: ["kubernetes-client.io"]
+      resources: ["externalsecrets"]
+      verbs: ["*"]
+    # allow for "old" Helm Operator based releases for now
+    - apiGroups: ["helm.fluxcd.io"]
+      resources: ["helmreleases"]
+      verbs: ["*"]
+
+# -- configure git source repository
+git:
+  # -- interval to check for updates
+  interval: 2m
+  # -- repository url
+  url:
+  # -- git reference (optional)
+  ref:
+  # -- reference to secret with git credentials (optional)
+  secretRef:
+
+# -- configure the kustomize applied to ns
+kustomize:
+  # -- reconciliation interval
+  interval: 5m
+  # -- sub path within git source repo (optional)
+  path:
+  # -- enables garbage collection
+  prune: true
 
 # -- helm-operator installed by subchart (see https://neticdk.github.io/helm-operator)
+# DEPRECATED!
+# This is kept currently to allow a smooth transition from Helm Operator to helm-controller of flux2
 helm-operator:
-  enabled: true
+  enabled: false
   helm:
     versions: "v3"
   resources:
