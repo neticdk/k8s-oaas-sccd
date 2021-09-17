@@ -58,7 +58,7 @@ rbac:
   # -- default rules restricting access to namespace
   rules:
     - apiGroups: [""]
-      resources: ["services", "configmaps", "secrets", "persistentvolumeclaims"]
+      resources: ["services", "configmaps", "secrets", "persistentvolumeclaims", "serviceaccounts"]
       verbs: ["*"]
     - apiGroups: ["apps"]
       resources: ["deployments", "daemonset", "statefulsets", "replicasets"]
@@ -84,7 +84,7 @@ rbac:
     - apiGroups: ["source.toolkit.fluxcd.io"]
       resources: ["helmrepositories"]
       verbs: ["*"]
-    - apiGroups: ["kubernetes-client.io"]
+    - apiGroups: ["external-secrets.io"]
       resources: ["externalsecrets"]
       verbs: ["*"]
     # allow for "old" Helm Operator based releases for now
