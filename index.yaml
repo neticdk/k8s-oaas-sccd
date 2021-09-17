@@ -2,6 +2,25 @@ apiVersion: v1
 entries:
   oaas-namespace:
   - apiVersion: v2
+    created: "2021-09-17T07:03:39.422884458Z"
+    dependencies:
+    - condition: helm-operator.enabled
+      name: helm-operator
+      repository: https://neticdk.github.io/helm-operator
+      version: 1.2.2
+    description: A Helm chart to initialize new namespace
+    digest: 8f37b7254988c8c68efba93072c9643d6f8ea655acffa45c9ca1114ecdc07512
+    home: https://github.com/neticdk/k8s-oaas-sccd
+    icon: https://www.netic.dk/wp-content/uploads/2020/07/bluelogo-netic-trifork-blue_641px.png
+    maintainers:
+    - email: tal@netic.dk
+      name: langecode
+    name: oaas-namespace
+    type: application
+    urls:
+    - https://github.com/neticdk/k8s-oaas-sccd/releases/download/oaas-namespace-2.0.4/oaas-namespace-2.0.4.tgz
+    version: 2.0.4
+  - apiVersion: v2
     created: "2021-07-09T10:32:08.725298702Z"
     dependencies:
     - condition: helm-operator.enabled
@@ -77,4 +96,4 @@ entries:
     urls:
     - https://github.com/neticdk/k8s-oaas-sccd/releases/download/oaas-namespace-2.0.0/oaas-namespace-2.0.0.tgz
     version: 2.0.0
-generated: "2021-07-09T10:32:08.725316102Z"
+generated: "2021-09-17T07:03:39.422917159Z"
