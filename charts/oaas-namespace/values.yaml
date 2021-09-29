@@ -82,7 +82,7 @@ rbac:
       resources: ["helmreleases"]
       verbs: ["*"]
     - apiGroups: ["source.toolkit.fluxcd.io"]
-      resources: ["helmrepositories"]
+      resources: ["helmrepositories","gitrepositories"]
       verbs: ["*"]
     - apiGroups: ["external-secrets.io"]
       resources: ["externalsecrets"]
