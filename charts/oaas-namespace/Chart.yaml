@@ -3,13 +3,8 @@ name: oaas-namespace
 type: application
 description: A Helm chart to initialize new namespace
 home: https://github.com/neticdk/k8s-oaas-sccd
-version: "2.0.5"
+version: "2.1.0"
 icon: https://www.netic.dk/wp-content/uploads/2020/07/bluelogo-netic-trifork-blue_641px.png
 maintainers:
   - name: langecode
     email: tal@netic.dk
-dependencies:
-  - name: helm-operator
-    version: 1.2.2
-    repository: https://neticdk.github.io/helm-operator
-    condition: helm-operator.enabled
