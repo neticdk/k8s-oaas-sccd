@@ -11,7 +11,7 @@ jobs:
   charts-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
 
@@ -25,16 +25,16 @@ jobs:
           helm-docs
 
       - name: Set up Helm
-        uses: azure/setup-helm@18bc76811624f360dbd7f18c2d4ecb32c7b87bab # v1
+        uses: azure/setup-helm@b9e51907a09c216f16ebe8536097933489208112 # v4
         with:
           version: v3.4.0
 
-      - uses: actions/setup-python@e9aba2c848f5ebd159c070c61ea2c4e2b122355e # v2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: 3.7
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@b0d4458c71155b54fcf33e11dd465dc923550009 # v2.0.1
+        uses: helm/chart-testing-action@0d28d3144d3a25ea2cc349d6e59901c4ff469b3b # v2.7.0
 
       - name: Run chart-testing (lint)
         run: ct lint --all --chart-repos neticdkflux=https://neticdk.github.io/flux --chart-repos neticdkhelmop=https://neticdk.github.io/helm-operator
